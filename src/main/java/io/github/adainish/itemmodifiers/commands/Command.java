@@ -3,10 +3,11 @@ package io.github.adainish.itemmodifiers.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.adainish.itemmodifiers.ItemModifiers;
+import io.github.adainish.itemmodifiers.enumerations.ItemTypeHandler;
 import io.github.adainish.itemmodifiers.enumerations.ItemTypes;
 import io.github.adainish.itemmodifiers.obj.*;
 import io.github.adainish.itemmodifiers.util.PermissionUtil;
-import io.github.adainish.itemmodifiers.util.ServerUtil;
+import io.github.adainish.itemmodifiers.util.Util;
 import io.github.adainish.itemmodifiers.wrapper.PermissionWrapper;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -21,21 +22,40 @@ public class Command {
                 .then(Commands.literal("reload")
                         .executes(cc -> {
                             ItemModifiers.instance.reload();
+                            Util.send(cc.getSource(), "&cReloaded the config files and modifiers");
                             return 1;
                         })
                 )
                 .then(
                         Commands.argument("target", StringArgumentType.string())
                                 .executes(cc -> {
-                                    Optional <ServerPlayerEntity> player = ServerUtil.getPlayerOptional(StringArgumentType.getString(cc, "player"));
+                                    Optional <ServerPlayerEntity> player = Util.getPlayerOptional(StringArgumentType.getString(cc, "player"));
                                     if (player.isPresent()) {
-                                        ServerUtil.send(cc.getSource(), "&cPlease provide a player name!");
-                                    } else ServerUtil.send(cc.getSource(), "&cPlease provide an online player name!");
+                                        Util.send(cc.getSource(), "&cPlease provide a player name!");
+                                    } else Util.send(cc.getSource(), "&cPlease provide an online player name!");
                                     return 1;
                                 })
-                                .then(Commands.argument("", StringArgumentType.string())
-                                        .executes(cc -> {
-
+                                .then(Commands.argument("itemtype", StringArgumentType.string())
+                                        .executes(context -> {
+                                            String typeString = StringArgumentType.getString(context, "itemtype");
+                                            if (!ItemTypeHandler.isItemType(typeString)) {
+                                                Util.send(context.getSource(), "&cPlease provide a valid modifier type");
+                                                return 1;
+                                            }
+                                            ItemTypes itemType = ItemTypeHandler.getItemType(typeString);
+                                            switch (itemType) {
+                                                case Ability:
+                                                case EVS:
+                                                case Gender:
+                                                case IVS:
+                                                case Level:
+                                                case Nature:
+                                                case PokeBall:
+                                                case Shiny:
+                                                case Size:
+                                                    Util.send(context.getSource(), "&ePlease provide a valid item name");
+                                                    break;
+                                            }
                                             return 1;
                                         })
                                         .then(Commands.argument("itemname", StringArgumentType.greedyString())
@@ -44,19 +64,21 @@ public class Command {
                                                                 String typeString = StringArgumentType.getString(context, "itemtype");
                                                                 String itemProvided = StringArgumentType.getString(context, "itemname");
                                                                 String targetName = StringArgumentType.getString(context, "target");
-                                                                ServerPlayerEntity target = ServerUtil.getPlayer(targetName);
+                                                                ServerPlayerEntity target = Util.getPlayer(targetName);
                                                                 if (target == null) {
-                                                                    ServerUtil.send(context.getSource(), "&cPlease provide a valid online player name");
-                                                                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                                                                    throw new Exception("&cPlease provide a valid online player name");
                                                                 }
-                                                                ItemTypes itemType = ItemTypes.valueOf(typeString);
+                                                                if (!ItemTypeHandler.isItemType(typeString)) {
+                                                                    throw new Exception("&cPlease provide a valid modifier type");
+                                                                }
+                                                                ItemTypes itemType = ItemTypeHandler.getItemType(typeString);
                                                                 switch (itemType) {
                                                                     case Ability: {
                                                                         if (Ability.isItem(itemProvided)) {
                                                                             Ability.Items item = Ability.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -65,7 +87,7 @@ public class Command {
                                                                             EVS.Items item = EVS.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -74,7 +96,7 @@ public class Command {
                                                                             Gender.Items item = Gender.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -83,7 +105,7 @@ public class Command {
                                                                             IVS.Items item = IVS.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -92,7 +114,7 @@ public class Command {
                                                                             Level.Items item = Level.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -101,7 +123,7 @@ public class Command {
                                                                             Nature.Items item = Nature.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -110,7 +132,7 @@ public class Command {
                                                                             PokeBall.Items item = PokeBall.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -119,7 +141,7 @@ public class Command {
                                                                             Shiny.Items item = Shiny.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
@@ -128,12 +150,12 @@ public class Command {
                                                                             Size.Items item = Size.getItem(itemProvided);
                                                                             target.inventory.addItemStackToInventory(item.getItem());
                                                                         } else {
-                                                                            ServerUtil.send(context.getSource(), "This is not a valid modifier item");
+                                                                            throw new Exception("&CThis is not a valid modifier item");
                                                                         }
                                                                         break;
                                                                     }
                                                                 }
-                                                            } catch (NullPointerException e) {
+                                                            } catch (Exception e) {
                                                                 ItemModifiers.log.error(e);
                                                             }
                                                             return com.mojang.brigadier.Command.SINGLE_SUCCESS;

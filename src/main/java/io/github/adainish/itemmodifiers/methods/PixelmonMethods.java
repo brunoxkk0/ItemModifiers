@@ -7,7 +7,7 @@ import com.pixelmonmod.pixelmon.api.registries.PixelmonSpecies;
 import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import io.github.adainish.itemmodifiers.obj.*;
-import io.github.adainish.itemmodifiers.util.ServerUtil;
+import io.github.adainish.itemmodifiers.util.Util;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -18,17 +18,17 @@ public class PixelmonMethods {
         Ability.Items abilityMod = Ability.getItem(modifier);
 
         if (!abilityMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!abilityMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!abilityMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyAbility(pokemon.getOwnerPlayer(), pokemon, abilityMod, itemStack));
@@ -38,17 +38,17 @@ public class PixelmonMethods {
         Level.Items levelMod = Level.getItem(modifier);
 
         if (!levelMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!levelMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!levelMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.closeUI(pokemon.getOwnerPlayer());
@@ -61,23 +61,23 @@ public class PixelmonMethods {
             action = "decreased";
         }
         itemStack.shrink(1);
-        ServerUtil.send(pokemon.getOwnerPlayer(), "&eYour %pokemon%'s level has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(levelMod.getLevels())));
+        Util.send(pokemon.getOwnerPlayer(), "&eYour %pokemon%'s level has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(levelMod.getLevels())));
     }
 
     public static void useIVSModifier(String modifier, Pokemon pokemon, ItemStack itemStack) {
         IVS.Items ivsMod = IVS.getItem(modifier);
         if (!ivsMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!ivsMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!ivsMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyIVS(pokemon.getOwnerPlayer(), pokemon, ivsMod, itemStack));
@@ -86,25 +86,25 @@ public class PixelmonMethods {
     public static void useEVSModifier(String modifier, Pokemon pokemon, ItemStack itemStack) {
         EVS.Items evsMod = EVS.getItem(modifier);
         if (!evsMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!evsMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!evsMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         if (pokemon.getEVs().getTotal() >= 510) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYour %p's EVs are already maxed out".replace("%p", pokemon.getLocalizedName()));
+            Util.send(pokemon.getOwnerPlayer(), "&cYour %p's EVs are already maxed out".replace("%p", pokemon.getLocalizedName()));
             return;
         }
         if (( pokemon.getEVs().getTotal() + evsMod.getAmount()) > 510) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYour %p's EVs would be higher than the allowed amount if used!".replace("%p", pokemon.getLocalizedName()));
+            Util.send(pokemon.getOwnerPlayer(), "&cYour %p's EVs would be higher than the allowed amount if used!".replace("%p", pokemon.getLocalizedName()));
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyEVS(pokemon.getOwnerPlayer(), pokemon, evsMod, itemStack));
@@ -114,17 +114,17 @@ public class PixelmonMethods {
         Gender.Items genderMod = Gender.getItem(modifier);
 
         if (!genderMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!genderMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!genderMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyGender(pokemon.getOwnerPlayer(), pokemon, genderMod, itemStack));
@@ -134,45 +134,45 @@ public class PixelmonMethods {
         Shiny.Items shinyMod = Shiny.getItem(modifier);
 
         if (pokemon.isShiny()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou can't modify a Pokemon that is already Shiny!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou can't modify a Pokemon that is already Shiny!");
             return;
         }
 
         if (!shinyMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!shinyMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!shinyMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.closeUI(pokemon.getOwnerPlayer());
         pokemon.setShiny(true);
         itemStack.shrink(1);
-        ServerUtil.send(pokemon.getOwnerPlayer(), "&bYou made your %pokemon% Shiny!".replaceAll("%pokemon%", pokemon.getLocalizedName()));
+        Util.send(pokemon.getOwnerPlayer(), "&bYou made your %pokemon% Shiny!".replaceAll("%pokemon%", pokemon.getLocalizedName()));
     }
 
     public static void useSizeModifier(String modifier, Pokemon pokemon, ItemStack itemStack) {
         Size.Items sizeMod = Size.getItem(modifier);
 
         if (!sizeMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!sizeMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!sizeMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifySize(pokemon.getOwnerPlayer(), pokemon, sizeMod, itemStack));
@@ -182,17 +182,17 @@ public class PixelmonMethods {
         PokeBall.Items pokeballMod = PokeBall.getItem(modifier);
 
         if (!pokeballMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!pokeballMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!pokeballMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
 
@@ -204,17 +204,17 @@ public class PixelmonMethods {
         Nature.Items natureMod = Nature.getItem(modifier);
 
         if (!natureMod.isAllowDitto() && pokemon.getSpecies().equals(PixelmonSpecies.DITTO.getValueUnsafe())) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify a Ditto using this Item!");
             return;
         }
 
         if (!natureMod.isAllowLegends() && pokemon.isLegendary()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Legendary Pokemon using this Item!");
             return;
         }
 
         if (!natureMod.isAllowUltraBeasts() && pokemon.isUltraBeast()) {
-            ServerUtil.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyNature(pokemon.getOwnerPlayer(), pokemon, natureMod, itemStack));

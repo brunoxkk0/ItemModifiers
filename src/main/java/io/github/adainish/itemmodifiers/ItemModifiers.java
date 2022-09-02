@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -87,14 +88,15 @@ public class ItemModifiers {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         initConfig();
-        initItems();
         log.info("Item Modifiers has finished loading");
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartedEvent event) {
+    public void onServerStarted(FMLServerStartedEvent event) {
+        server = ServerLifecycleHooks.getCurrentServer();
         MinecraftForge.EVENT_BUS.register(new ModifierListener());
         MinecraftForge.EVENT_BUS.register(new ConsumptionListener());
+        initItems();
     }
 
 

@@ -5,7 +5,7 @@ import io.github.adainish.itemmodifiers.enumerations.ItemTypes;
 import io.github.adainish.itemmodifiers.methods.GenerateUI;
 import io.github.adainish.itemmodifiers.obj.*;
 import io.github.adainish.itemmodifiers.util.PermissionUtil;
-import io.github.adainish.itemmodifiers.util.ServerUtil;
+import io.github.adainish.itemmodifiers.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -144,7 +144,7 @@ public class ModifierListener {
                 if (PermissionUtil.checkPerm(player, perm)){
                     UIManager.openUIForcefully(player, GenerateUI.generateParty(player, itemType, itemArg, stack));
                 }
-                else ServerUtil.send(player, "&cYou're not allowed to use this Item!");
+                else Util.send(player, "&cYou're not allowed to use this Item!");
             }
         }
     }

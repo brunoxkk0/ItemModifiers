@@ -36,7 +36,7 @@ public class TextUtil {
 
     public static final Color ORANGE = Color.fromHex("#FF6700");
 
-    private static final IFormattableTextComponent PLUGIN_PREFIX = new StringTextComponent(ServerUtil.formattedString("&b[&eModifiers&b]")).setStyle(Style.EMPTY.setColor(BLUE));
+    private static final IFormattableTextComponent PLUGIN_PREFIX = new StringTextComponent(Util.formattedString("&b[&eModifiers&b]")).setStyle(Style.EMPTY.setColor(BLUE));
 
     private static final IFormattableTextComponent MESSAGE_PREFIX = getPluginPrefix().appendSibling(new StringTextComponent(" &c» ").setStyle(Style.EMPTY.setColor(ORANGE)));
 

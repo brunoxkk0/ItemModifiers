@@ -5,10 +5,9 @@ import info.pixelmon.repack.org.spongepowered.serialize.SerializationException;
 import io.github.adainish.itemmodifiers.ItemModifiers;
 import io.github.adainish.itemmodifiers.config.PokeBallConfig;
 import io.github.adainish.itemmodifiers.util.ItemBuilder;
-import io.github.adainish.itemmodifiers.util.ServerUtil;
+import io.github.adainish.itemmodifiers.util.Util;
 import io.github.adainish.itemmodifiers.wrapper.PermissionWrapper;
 import io.leangen.geantyref.TypeToken;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.Level;
 
@@ -135,8 +134,8 @@ public class PokeBall {
                 ItemModifiers.log.log(Level.WARN, e);
                 return null;
             }
-            itemBuilder.setName(ServerUtil.formattedString(display));
-            itemBuilder.setLore(ServerUtil.formattedArrayList(getLore()));
+            itemBuilder.setName(Util.formattedString(display));
+            itemBuilder.setLore(Util.formattedArrayList(getLore()));
             ItemStack stack = itemBuilder.build();
             stack.getTag().putBoolean("itemmodifier", true);
             stack.getTag().putString("PokeBallModifier", this.key);

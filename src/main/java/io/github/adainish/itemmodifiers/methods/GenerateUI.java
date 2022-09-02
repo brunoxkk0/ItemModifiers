@@ -3,11 +3,12 @@ package io.github.adainish.itemmodifiers.methods;
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
-import ca.landonjw.gooeylibs2.api.page.GooeyPage;
-import ca.landonjw.gooeylibs2.api.page.Page;
-import ca.landonjw.gooeylibs2.api.template.Template;
+import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
+import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
+import ca.landonjw.gooeylibs2.api.button.linked.LinkedPageButton;
+import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
+import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBallRegistry;
 import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
@@ -16,10 +17,9 @@ import com.pixelmonmod.pixelmon.api.registries.PixelmonSpecies;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
-import com.pixelmonmod.pixelmon.items.MintItem;
 import io.github.adainish.itemmodifiers.enumerations.ItemTypes;
 import io.github.adainish.itemmodifiers.obj.*;
-import io.github.adainish.itemmodifiers.util.ServerUtil;
+import io.github.adainish.itemmodifiers.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,7 +56,7 @@ public class GenerateUI {
                         pokemon.addFlag(s);
                     }
                 }
-                ServerUtil.send(player, "&eYour %pokemon% now has the Gender %gender%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%gender%", gender.name()));
+                Util.send(player, "&eYour %pokemon% now has the Gender %gender%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%gender%", gender.name()));
                 UIManager.closeUI(buttonAction.getPlayer());
             }).build();
             buttonList.add(button);
@@ -95,7 +95,7 @@ public class GenerateUI {
                         pokemon.addFlag(s);
                     }
                 }
-                ServerUtil.send(player, "&eYour %pokemon% now has the ability %ability%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%ability%", a.getName()));
+                Util.send(player, "&eYour %pokemon% now has the ability %ability%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%ability%", a.getName()));
                 UIManager.closeUI(buttonAction.getPlayer());
             }).build();
             buttonList.add(button);
@@ -136,7 +136,7 @@ public class GenerateUI {
                     }
                 }
                 UIManager.closeUI(buttonAction.getPlayer());
-                ServerUtil.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", statType).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
+                Util.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", statType).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
                 itemStack.shrink(1);
             }).build();
             buttonList.add(button);
@@ -177,7 +177,7 @@ public class GenerateUI {
                     }
                 }
                 UIManager.closeUI(buttonAction.getPlayer());
-                ServerUtil.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", statType).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
+                Util.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", statType).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
                 itemStack.shrink(1);
             }).build();
             buttonList.add(button);
@@ -211,7 +211,7 @@ public class GenerateUI {
                         pokemon.addFlag(s);
                     }
                 }
-                ServerUtil.send(player, "&eYour %pokemon% now has the size %size%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%size%", growth));
+                Util.send(player, "&eYour %pokemon% now has the size %size%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%size%", growth));
                 UIManager.closeUI(buttonAction.getPlayer());
             }).build();
             buttonList.add(button);
@@ -255,7 +255,7 @@ public class GenerateUI {
                         pokemon.addFlag(s);
                     }
                 }
-                ServerUtil.send(player, "&eYour %pokemon% now has the pokeball %ball%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%ball%", nat));
+                Util.send(player, "&eYour %pokemon% now has the pokeball %ball%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%ball%", nat));
                 UIManager.closeUI(player);
             }).build();
             buttonList.add(button);
@@ -291,7 +291,7 @@ public class GenerateUI {
                         pokemon.addFlag(s);
                     }
                 }
-                ServerUtil.send(player, "&eYour %pokemon% now has the nature %nature%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%nature%", nat));
+                Util.send(player, "&eYour %pokemon% now has the nature %nature%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%nature%", nat));
                 UIManager.closeUI(buttonAction.getPlayer());
             }).build();
             buttonList.add(button);
@@ -368,152 +368,135 @@ public class GenerateUI {
 
     private static final ItemStack pane1 = new ItemStack(Items.GRAY_STAINED_GLASS_PANE);
 
-    public static Page generateParty(ServerPlayerEntity player, Enum<ItemTypes> type, String itemarg, ItemStack itemStack) {
-
+    public static LinkedPage generateParty(ServerPlayerEntity player, Enum<ItemTypes> type, String itemarg, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
         ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
-
-        return GooeyPage.builder()
+        template.row(0, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), partyPokemon(player, type, itemarg, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(partyPokemon(player, type, itemarg, itemStack))
-//                .dynamicContentArea(0, 1, 1, 6)
-                .title("Modify which Pokemon?")
-                .build();
+                .title("Modify which Pokemon?"));
     }
 
-    public static Page modifyIVS(ServerPlayerEntity player, Pokemon pokemon, IVS.Items ivsMod, ItemStack itemStack) {
-
+    public static LinkedPage modifyIVS(ServerPlayerEntity player, Pokemon pokemon, IVS.Items ivsMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
         ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
-
-        return GooeyPage.builder()
+        template.row(0, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), ivs(player, pokemon, ivsMod, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(ivs(player, pokemon, ivsMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 6)
-                .title("Which IV Stat do you want to Edit?")
-                .build();
+                .title("Which IV Stat do you want to Edit?"));
     }
 
-    public static Page modifyEVS(ServerPlayerEntity player, Pokemon pokemon, EVS.Items evsMod, ItemStack itemStack) {
-
+    public static LinkedPage modifyEVS(ServerPlayerEntity player, Pokemon pokemon, EVS.Items evsMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
         ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
-
-        return GooeyPage.builder()
+        template.row(0, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), evs(player, pokemon, evsMod, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(evs(player, pokemon, evsMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 6)
-                .title("Which EV Stat do you want to Edit?")
-                .build();
+                .title("Which EV Stat do you want to Edit?"));
     }
 
-    public static Page modifyGender(ServerPlayerEntity player, Pokemon pokemon, Gender.Items genderMod, ItemStack itemStack) {
-
+    public static LinkedPage modifyGender(ServerPlayerEntity player, Pokemon pokemon, Gender.Items genderMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
         ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
-
-        return GooeyPage.builder()
+        template.row(0, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), genders(player, pokemon, genderMod, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(genders(player, pokemon, genderMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 6)
-                .title("Which Gender do you want?")
-                .build();
+                .title("Which Gender do you want?"));
     }
 
-    public static Page modifySize(ServerPlayerEntity player, Pokemon pokemon, Size.Items sizeMod, ItemStack itemStack) {
-
-        ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
+    public static LinkedPage modifySize(ServerPlayerEntity player, Pokemon pokemon, Size.Items sizeMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
+        ChestTemplate.Builder template = ChestTemplate.builder(4).fill(GooeyButton.builder().display(pane1).build());
         GooeyButton nextpage;
         GooeyButton previouspage;
         if (sizeMod.getGrowths().size() > 8) {
-            nextpage = GooeyButton.builder()
+            nextpage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_right))
                     .title("§cNext page")
+                    .linkType(LinkType.Next)
                     .build();
-            previouspage = GooeyButton.builder()
+            previouspage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_left))
                     .title("§cPrevious page")
+                    .linkType(LinkType.Previous)
                     .build();
         } else {
             nextpage = filler();
             previouspage = filler();
         }
-        template.set(0, 0, previouspage);
-        template.set(0, 8, nextpage);
+        template.set(1, 0, previouspage);
+        template.set(1, 8, nextpage);
+        template.rectangle(1, 1, 2, 7, placeHolderButton);
 
-        return GooeyPage.builder()
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), sizes(player, pokemon, sizeMod, itemStack), LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(sizes(player, pokemon, sizeMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 7)
-                .title("Which Growth do you want?")
-                .build();
+                .title("Which Growth do you want?"));
     }
 
-    public static Page modifyPokeBall(ServerPlayerEntity player, Pokemon pokemon, PokeBall.Items ball, ItemStack itemStack) {
-
-        ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
+    public static LinkedPage modifyPokeBall(ServerPlayerEntity player, Pokemon pokemon, PokeBall.Items ball, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
+        ChestTemplate.Builder template = ChestTemplate.builder(4).fill(GooeyButton.builder().display(pane1).build());
         GooeyButton nextpage;
         GooeyButton previouspage;
         if (ball.getPokeballList().size() > 8) {
-            nextpage = GooeyButton.builder()
+            nextpage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_right))
                     .title("§cNext page")
+                    .linkType(LinkType.Next)
                     .build();
-            previouspage = GooeyButton.builder()
+            previouspage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_left))
                     .title("§cPrevious page")
+                    .linkType(LinkType.Previous)
                     .build();
         } else {
             nextpage = filler();
             previouspage = filler();
         }
 
-        template.set(0, 0, previouspage);
-        template.set(0, 8, nextpage);
-
-        return GooeyPage.builder()
+        template.set(1, 0, previouspage);
+        template.set(1, 8, nextpage);
+        template.rectangle(1, 1, 2, 7, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), pokeballs(player, pokemon, ball, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(pokeballs(player, pokemon, ball, itemStack))
-//                .dynamicContentArea(0, 1, 1, 7)
-                .title("Which Ball do you want?")
-                .build();
+                .title("Which Ball do you want?"));
     }
 
-    public static Page modifyNature(ServerPlayerEntity player, Pokemon pokemon, Nature.Items natureMod, ItemStack itemStack) {
-
-        ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
+    public static LinkedPage modifyNature(ServerPlayerEntity player, Pokemon pokemon, Nature.Items natureMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
+        ChestTemplate.Builder template = ChestTemplate.builder(4).fill(GooeyButton.builder().display(pane1).build());
         GooeyButton nextpage;
         GooeyButton previouspage;
         if (natureMod.getEnumNatures().size() > 8) {
-            nextpage = GooeyButton.builder()
+            nextpage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_right))
                     .title("§cNext page")
+                    .linkType(LinkType.Next)
                     .build();
-            previouspage = GooeyButton.builder()
+            previouspage = LinkedPageButton.builder()
                     .display(new ItemStack(PixelmonItems.trade_holder_left))
                     .title("§cPrevious page")
+                    .linkType(LinkType.Previous)
                     .build();
         } else {
             nextpage = filler();
             previouspage = filler();
         }
+        template.rectangle(1, 1, 2, 7, placeHolderButton);
+        template.set(1, 0, previouspage);
+        template.set(1, 8, nextpage);
 
-        template.set(0, 0, previouspage);
-        template.set(0, 8, nextpage);
-
-        return GooeyPage.builder()
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), natures(player, pokemon, natureMod, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(natures(player, pokemon, natureMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 7)
-                .title("Which Nature do you want?")
-                .build();
+                .title("Which Nature do you want?"));
     }
 
-    public static Page modifyAbility(ServerPlayerEntity player, Pokemon pokemon, Ability.Items abilityMod, ItemStack itemStack) {
-
+    public static LinkedPage modifyAbility(ServerPlayerEntity player, Pokemon pokemon, Ability.Items abilityMod, ItemStack itemStack) {
+        PlaceholderButton placeHolderButton = new PlaceholderButton();
         ChestTemplate.Builder template = ChestTemplate.builder(1).fill(GooeyButton.builder().display(pane1).build());
-
-        return GooeyPage.builder()
+        template.row(0, placeHolderButton);
+        return PaginationHelper.createPagesFromPlaceholders(template.build(), abilities(player, pokemon, abilityMod, itemStack),LinkedPage.builder()
                 .template(template.build())
-//                .dynamicContents(abilities(player, pokemon, abilityMod, itemStack))
-//                .dynamicContentArea(0, 1, 1, 6)
-                .title("Which Ability do you want?")
-                .build();
+                .title("Which Ability do you want?"));
     }
 }

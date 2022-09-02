@@ -40,7 +40,7 @@ public class ItemBuilder {
         ListNBT nbtLore = new ListNBT();
         for (String line : tag) {
             if (line != null) {
-                nbtLore.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(TextUtil.parseHexCodes(ServerUtil.formattedString(line), false))));
+                nbtLore.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(TextUtil.parseHexCodes(Util.formattedString(line), false))));
             }
         }
         stack.getOrCreateChildTag("display").put("Lore", nbtLore);

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ServerUtil {
+public class Util {
     public static MinecraftServer server = ItemModifiers.server;
 
     private static final MinecraftServer SERVER = server;
