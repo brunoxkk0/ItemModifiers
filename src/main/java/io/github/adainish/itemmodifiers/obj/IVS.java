@@ -143,6 +143,8 @@ public class IVS {
             itemBuilder.setName(Util.formattedString(display));
             itemBuilder.setLore(Util.formattedArrayList(getLore()));
             ItemStack stack = itemBuilder.build();
+            if (enchantItem)
+                itemBuilder.setEnchanted();
             stack.getTag().putBoolean("itemmodifier", true);
             stack.getTag().putString("IVSModifier", this.key);
             stack.getTag().putString("itemType", "IVS");

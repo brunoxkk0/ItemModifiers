@@ -1,5 +1,6 @@
 package io.github.adainish.itemmodifiers.util;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
@@ -32,6 +33,14 @@ public class ItemBuilder {
 
     public ItemBuilder setName(String name) {
         this.stack.setDisplayName(new StringTextComponent(name));
+        return this;
+    }
+
+    public ItemBuilder setEnchanted() {
+        ItemStack newStack = stack;
+        newStack.addEnchantment(Enchantments.LUCK_OF_THE_SEA, 1);
+        newStack.getTag().putInt("HideFlags", 63);
+        this.stack = newStack;
         return this;
     }
 

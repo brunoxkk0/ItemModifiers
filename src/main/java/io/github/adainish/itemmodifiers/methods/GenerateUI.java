@@ -67,7 +67,7 @@ public class GenerateUI {
     public static List<Button> abilities(ServerPlayerEntity player, Pokemon pokemon, Ability.Items mod, ItemStack itemStack) {
         List<Button> buttonList = new ArrayList<>();
 
-        for(com.pixelmonmod.pixelmon.api.pokemon.ability.Ability a: pokemon.getForm().getAbilities().getAbilities()) {
+        for(com.pixelmonmod.pixelmon.api.pokemon.ability.Ability a: pokemon.getForm().getAbilities().getAll()) {
             if (pokemon.getAbility().equals(a))
                 continue;
 

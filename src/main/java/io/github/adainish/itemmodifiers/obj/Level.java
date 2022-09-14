@@ -133,6 +133,8 @@ public class Level {
             }
             itemBuilder.setName(Util.formattedString(display));
             itemBuilder.setLore(Util.formattedArrayList(getLore()));
+            if (enchantItem)
+                itemBuilder.setEnchanted();
             ItemStack stack = itemBuilder.build();
             stack.getTag().putBoolean("itemmodifier", true);
             stack.getTag().putString("LevelModifier", this.key);
