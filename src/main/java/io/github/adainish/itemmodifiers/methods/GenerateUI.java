@@ -160,8 +160,9 @@ public class GenerateUI {
 
             if (!mod.isAllowDitto() && pokemon.getSpecies().is(PixelmonSpecies.DITTO.getValueUnsafe()))
                 continue;
+            String st = statType.replace("_", " ");
 
-            Button button = GooeyButton.builder().title(statType).display(new ItemStack(PixelmonItems.max_elixir)).onClick(buttonAction -> {
+            Button button = GooeyButton.builder().title(st).display(new ItemStack(PixelmonItems.max_elixir)).onClick(buttonAction -> {
                 String action = "increased";
                 int amount = mod.getAmount();
                 if (mod.isIncrease()) {
@@ -177,7 +178,7 @@ public class GenerateUI {
                     }
                 }
                 UIManager.closeUI(buttonAction.getPlayer());
-                Util.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", statType).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
+                Util.send(player, "&eYour %pokemon% %stat% has been %action% by %amount%".replaceAll("%pokemon%", pokemon.getLocalizedName()).replaceAll("%stat%", st).replaceAll("%action%", action).replaceAll("%amount%", String.valueOf(amount)));
                 itemStack.shrink(1);
             }).build();
             buttonList.add(button);
