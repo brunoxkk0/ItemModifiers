@@ -220,8 +220,7 @@ public class GenerateUI {
     }
 
     public static ItemStack getPokeBall(com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBall pokeBall) {
-        Item item = pokeBall.getBallItem();
-        return new ItemStack(item);
+        return pokeBall.getBallItem();
     }
 
     public static List<Button> pokeballs(ServerPlayerEntity player, Pokemon pokemon, PokeBall.Items mod, ItemStack itemStack) {
@@ -242,10 +241,10 @@ public class GenerateUI {
             if (nat == null)
                 continue;
 
-            if (!PokeBallRegistry.getPokeBall(nat).isPresent())
+            if (!PokeBallRegistry.getPokeBall(nat).getValue().isPresent())
                 continue;
 
-            com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBall pokeBall = PokeBallRegistry.getPokeBall(nat).get();
+            com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBall pokeBall = PokeBallRegistry.getPokeBall(nat).getValue().get();
 
             Button button = GooeyButton.builder().display(getPokeBall(pokeBall)).title(nat).onClick(buttonAction -> {
                 pokemon.setBall(pokeBall);
