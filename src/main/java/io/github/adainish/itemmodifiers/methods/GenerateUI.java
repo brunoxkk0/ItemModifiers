@@ -49,6 +49,11 @@ public class GenerateUI {
                 continue;
 
             Button button = GooeyButton.builder().display(new ItemStack(Items.DIAMOND)).title("%gender%".replaceAll("%gender%", gender.name())).lore(Arrays.asList("Click to apply this Gender!")).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 pokemon.setGender(gender);
                 stack.shrink(1);
                 if (!mod.getSpecFlags().isEmpty()) {
@@ -88,6 +93,11 @@ public class GenerateUI {
             }
 
             Button button = GooeyButton.builder().display(new ItemStack(PixelmonItems.ability_capsule)).title("%ability%".replaceAll("%ability%", a.getName())).lore(Arrays.asList("Click to apply this ability!")).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 pokemon.setAbility(a);
                 itemStack.shrink(1);
                 if (!mod.getSpecFlags().isEmpty()) {
@@ -121,6 +131,11 @@ public class GenerateUI {
                 continue;
 
             Button button = GooeyButton.builder().title(statType).display(new ItemStack(PixelmonItems.protein)).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 String action = "increased";
                 int amount = mod.getAmount();
                 if (mod.isIncrease()) {
@@ -163,6 +178,11 @@ public class GenerateUI {
             String st = statType.replace("_", " ");
 
             Button button = GooeyButton.builder().title(st).display(new ItemStack(PixelmonItems.max_elixir)).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 String action = "increased";
                 int amount = mod.getAmount();
                 if (mod.isIncrease()) {
@@ -205,6 +225,11 @@ public class GenerateUI {
                 continue;
 
             Button button = GooeyButton.builder().display(new ItemStack(PixelmonItems.rare_bone)).title(growth).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 pokemon.setGrowth(EnumGrowth.getGrowthFromString(growth));
                 itemStack.shrink(1);
                 if (!mod.getSpecFlags().isEmpty()) {
@@ -248,6 +273,11 @@ public class GenerateUI {
             com.pixelmonmod.pixelmon.api.pokemon.item.pokeball.PokeBall pokeBall = PokeBallRegistry.getPokeBall(nat).getValue().get();
 
             Button button = GooeyButton.builder().display(getPokeBall(pokeBall)).title(nat).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 pokemon.setBall(pokeBall);
                 itemStack.shrink(1);
                 if (!mod.getSpecFlags().isEmpty()) {
@@ -284,6 +314,11 @@ public class GenerateUI {
 
 
             Button button = GooeyButton.builder().display(new ItemStack(PixelmonItems.mint_serious)).title(nat).onClick(buttonAction -> {
+                if (player.getHeldItemMainhand().isEmpty())
+                {
+                    Util.send(player, "&cYou're not allowed to use this item if it doesn't exist in your main hand!");
+                    return;
+                }
                 pokemon.setNature(com.pixelmonmod.pixelmon.api.pokemon.Nature.natureFromString(nat));
                 itemStack.shrink(1);
                 if (!mod.getSpecFlags().isEmpty()) {
