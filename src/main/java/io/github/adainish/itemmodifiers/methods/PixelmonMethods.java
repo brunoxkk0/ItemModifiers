@@ -127,6 +127,12 @@ public class PixelmonMethods {
             Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify Ultra Beasts using this Item!");
             return;
         }
+
+        if(pokemon.getGender() == com.pixelmonmod.pixelmon.api.pokemon.species.gender.Gender.NONE){
+            Util.send(pokemon.getOwnerPlayer(), "&cYou aren't allowed to modify the Pixelmon using this Item!");
+            return;
+        }
+
         UIManager.openUIForcefully(pokemon.getOwnerPlayer(), GenerateUI.modifyGender(pokemon.getOwnerPlayer(), pokemon, genderMod, itemStack));
     }
 

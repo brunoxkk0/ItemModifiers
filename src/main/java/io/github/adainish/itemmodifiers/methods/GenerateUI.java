@@ -21,7 +21,6 @@ import io.github.adainish.itemmodifiers.enumerations.ItemTypes;
 import io.github.adainish.itemmodifiers.obj.*;
 import io.github.adainish.itemmodifiers.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 

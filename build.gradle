@@ -125,11 +125,11 @@ repositories {
     maven { url = "https://jitpack.io/" }
     mavenCentral()
     maven {
-        url 'http://oss.sonatype.org/content/repositories/snapshots'
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
     mavenCentral()
     maven {
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
     ivy {
         url "https://download.nodecdn.net/containers"
@@ -156,9 +156,8 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
-    implementation 'reforged:server:9.1.2@Pixelmon-1.16.5-9.1.2-server.jar'
     implementation fileTree(dir: 'libs', include: '*.jar')
-//    implementation('ca.landonjw:GooeyLibs:1.16.5-2.3.2-SNAPSHOT')
+    compileOnly('ca.landonjw:GooeyLibs:1.16.5-2.3.3-SNAPSHOT')
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
